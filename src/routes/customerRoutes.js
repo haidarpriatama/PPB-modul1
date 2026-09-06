@@ -1,12 +1,12 @@
 import express from "express";
-import { CategoryController } from "../controllers/categoryController.js";
+import { CustomerController } from "../controllers/customerController.js";
 
 const router = express.Router();
 
-router.post("/", CategoryController.create);
-router.get("/", CategoryController.getAll);
-router.get("/:id", CategoryController.getById);
-router.put("/:id", CategoryController.update);
-router.delete("/:id", CategoryController.remove);
+router.get("/", CustomerController.getAll);
+router.get("/:id", CustomerController.getById);
+router.post("/", CustomerController.create);
+router.put("/:id", CustomerController.update);
+router.delete("/:id", CustomerController.remove);
 
 export default router;
