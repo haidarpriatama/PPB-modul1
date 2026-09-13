@@ -1,9 +1,24 @@
 import { CustomerModel } from "../models/customerModel.js";
 
+function validateCustomerInput(body) {
+  const { email, phone } = body;
+
+  if (!email || !String(email).includes("@")) {
+    return "Email wajib diisi dan harus mengandung karakter @";
+  }
+
+  if (!phone || String(phone).length < 10) {
+    return "Nomor telepon wajib diisi dan minimal 10 karakter";
+  }
+
+  return null;
+}
+
 export const CustomerController = {
   async getAll(req, res) {
     try {
-      const customers = await CustomerModel.getAll();
+      const { name, page, limit } = req.query;
+      const customers = await CustomerModel.getAll({ name, page, limit });
       res.json(customers);
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -21,6 +36,12 @@ export const CustomerController = {
 
   async create(req, res) {
     try {
+      const validationError = validateCustomerInput(req.body);
+
+      if (validationError) {
+        return res.status(400).json({ error: validationError });
+      }
+
       const customer = await CustomerModel.create(req.body);
       res.status(201).json(customer);
     } catch (err) {
@@ -30,6 +51,12 @@ export const CustomerController = {
 
   async update(req, res) {
     try {
+      const validationError = validateCustomerInput(req.body);
+
+      if (validationError) {
+        return res.status(400).json({ error: validationError });
+      }
+
       const customer = await CustomerModel.update(req.params.id, req.body);
       res.json(customer);
     } catch (err) {

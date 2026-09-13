@@ -32,10 +32,20 @@ export const ProductController = {
 
   async create(req, res) {
     try {
+      const { price, stock } = req.body;
+
+      if (price !== undefined && price < 0) {
+        return res.status(400).json({ error: "Harga tidak boleh kurang dari 0" });
+      }
+
+      if (stock !== undefined && stock < 0) {
+        return res.status(400).json({ error: "Stok tidak boleh kurang dari 0" });
+      }
+
       const product = await ProductModel.create(req.body);
       res.status(201).json(product);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err.message }); 
     }
   },
 
