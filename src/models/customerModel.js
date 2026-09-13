@@ -1,7 +1,7 @@
 import { supabase } from "../config/supabaseClient.js";
 
 export const CustomerModel = {
-  async getAll({ name, page = 1, limit = 10 } = {}) {
+  async getAll({ name, page = 1, limit = 5 } = {}) {
     const currentPage = Math.max(parseInt(page, 10) || 1, 1);
     const pageSize = Math.max(parseInt(limit, 10) || 10, 1);
     const from = (currentPage - 1) * pageSize;
